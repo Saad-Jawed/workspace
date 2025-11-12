@@ -52,7 +52,7 @@ const Taskbar = () => {
             >
               {tool.icon}
               {isMinimized && ( 
-                <div class="mt-1 h-1.5 w-1.5 rounded-full bg-white/70"></div> 
+                <div className="mt-1 h-1 w-1 rounded-full bg-white"></div> 
               )}
             </button>
 
