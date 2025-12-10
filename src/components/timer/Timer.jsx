@@ -36,22 +36,21 @@ const Timer = () => {
     useEffect(() => {
         if (isRunning) {
             timerIntervalRef.current = setInterval(() => {
-                setTimeLeft(prev => {
-                    if (prev <= 1) {
-                        clearInterval(timerIntervalRef.current);
-                        setIsRunning(false);
-
-                        handleModeSwitch();
-                        return 0;
-                    }
-                    
-                    return prev - 1;
-                });
+                setTimeLeft(prev => prev - 1);
             }, 1000);
         }
 
         return () => clearInterval(timerIntervalRef.current);
     }, [isRunning])
+
+    useEffect(() => {
+        if (timeLeft === 0 && isRunning) {
+            clearInterval(timerIntervalRef.current);
+            setIsRunning(false);
+
+            handleModeSwitch();
+        }
+    }, [timeLeft, isRunning])
 
     useEffect(() => {
         clearInterval(timerIntervalRef.current);
@@ -79,8 +78,6 @@ const Timer = () => {
                 setMode("short");
                 setFocusCount(prev => prev + 1);
             }
-            console.log("Focus session: " + focusCount);
-            
         }
 
         else if (mode === "short" || mode === "long") {
@@ -105,21 +102,21 @@ const Timer = () => {
                     <button
                         className={`rounded-lg py-1 px-3 text-white font-semibold transition-all duration-200 cursor-pointer hover:bg-white/10 ${mode === "focus" ? "bg-white/20 scale-105 " : "active:scale-95 hover:bg-white/10"} disabled:pointer-events-none  disabled:opacity-30`}
                         onClick={() => setMode("focus")}
-                    disabled={isRunning}
+                        disabled={isRunning}
                     >
                         Focus
                     </button>
                     <button
                         className={`rounded-lg py-1 px-3 text-white font-semibold transition-all duration-200 cursor-pointer hover:bg-white/10 ${mode === "short" ? "bg-white/20 scale-105 " : "active:scale-95 hover:bg-white/10"} disabled:pointer-events-none  disabled:opacity-30`}
                         onClick={() => setMode("short")}
-                    disabled={isRunning}
+                        disabled={isRunning}
                     >
                         Short Break
                     </button>
                     <button
                         className={`rounded-lg py-1 px-3 text-white font-semibold transition-all duration-200 cursor-pointer hover:bg-white/10 ${mode === "long" ? "bg-white/20 scale-105 " : "active:scale-95 hover:bg-white/10"} disabled:pointer-events-none  disabled:opacity-30`}
                         onClick={() => setMode("long")}
-                    disabled={isRunning}
+                        disabled={isRunning}
                     >
                         Long Break
                     </button>
