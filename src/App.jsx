@@ -11,7 +11,7 @@ function App() {
   const dispatch = useDispatch();
   const windowState = useSelector(state => state.win);
 
-  console.log(windowState);
+  // console.log(windowState);
   
 
   return (

@@ -15,7 +15,7 @@ const Taskbar = () => {
         openWindow({
           id: tool.id,
           toolName: tool.title,
-          element: tool.element || tool.title,
+          element: tool.title,
         })
       );
     } else if (existing.isMinimized) {
