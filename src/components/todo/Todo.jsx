@@ -22,9 +22,17 @@ const Todo = () => {
         setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo))
     }
 
+    const deleteTodo = (id, event) => {
+        event.stopPropagation();
+
+        let newTodoList = todos.filter(todo => todo.id !== id);
+        setTodos(newTodoList);
+
+    }
+
     const filteredTodos = todos.filter(todo => {
-        if(todoFilter === "active") return !todo.completed;
-        if(todoFilter === "completed") return todo.completed;
+        if (todoFilter === "active") return !todo.completed;
+        if (todoFilter === "completed") return todo.completed;
         return true;
     })
 
@@ -57,14 +65,14 @@ const Todo = () => {
                     All
                 </button>
 
-                <button 
+                <button
                     className={`rounded-lg py-1 px-3 text-white font-semibold transition-all duration-200 cursor-pointer hover:bg-white/10 ${todoFilter === "active" ? "bg-white/20 scale-105 " : "active:scale-95 hover:bg-white/10"}`}
                     onClick={() => setTodoFilter("active")}
                 >
                     Active
                 </button>
 
-                <button 
+                <button
                     className={`rounded-lg py-1 px-3 text-white font-semibold transition-all duration-200 cursor-pointer hover:bg-white/10 ${todoFilter === "completed" ? "bg-white/20 scale-105 " : "active:scale-95 hover:bg-white/10"}`}
                     onClick={() => setTodoFilter("completed")}
                 >
@@ -79,12 +87,19 @@ const Todo = () => {
                 ) : filteredTodos.map(todo => (
                     <div
                         key={todo.id}
-                        className="bg-white/5 border border-white/10 rounded-lg p-3"
+                        className="group bg-white/5 border border-white/10 rounded-lg p-3 relative hover:bg-white/10 transition"
                         onClick={() => toggleTodo(todo.id)}
                     >
                         <p className={`whitespace-pre-wrap text-sm font-semibold ${todo.completed === true ? "line-through opacity-50" : ""}`}>
                             {todo.text}
                         </p>
+
+                        <button
+                            className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-500/10 transition -pointer"
+                            onClick={(e) => deleteTodo(todo.id, e)}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash2-icon lucide-trash-2 text-white/60 hover:text-red-500 transition"><path d="M10 11v6" /><path d="M14 11v6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /><path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
+                        </button>
                     </div>
                 ))}
 
