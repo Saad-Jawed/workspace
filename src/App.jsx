@@ -1,7 +1,8 @@
 // import './App.css'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
+import { getBuiltInWallpaperById } from "./conf/wallpaperConf";
 import Clock from "./components/clock/Clock"
 import Taskbar from "./components/taskbar/Taskbar"
 import Window from "./components/window/Window"
@@ -10,12 +11,20 @@ function App() {
   // const [windowState, setWindowState] = useState([]);
   const dispatch = useDispatch();
   const windowState = useSelector(state => state.win);
+  const wallpaperId = useSelector(state => state.wall.wallpaperId);
+  let bgImg = "";
 
   // console.log(windowState);
+
+  useEffect(() => {
+    bgImg = getBuiltInWallpaperById(wallpaperId);
+    document.getElementById("screen-bg").style.backgroundImage = `url(${bgImg})`
+    
+  }, [wallpaperId]);
   
 
   return (
-    <div id='screen-bg' className='relative h-screen w-full overflow-hidden bg-cover bg-center bg-zinc-600' style={{backgroundImage: "url('../bg-images/lofi-bg.jpg')"}}>
+    <div id='screen-bg' className='relative h-screen w-full overflow-hidden bg-cover bg-center bg-zinc-600'>
 
       {/* Clock and day info will be here */}
       <Clock />
