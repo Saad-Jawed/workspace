@@ -1,67 +1,123 @@
 import { useEffect, useRef, useState } from 'react'
 
 const songs = [
-  { id: 1, title: "Night Walk", artist: "Lofi Beats", duration: "2:45" },
-  { id: 2, title: "Rain Coding", artist: "Chillhop", duration: "3:10" },
-  { id: 3, title: "Midnight Train", artist: "Synthwave", duration: "4:05" },
+  {
+    id: 1,
+    title: "Relax Lofi Beats",
+    artist: "Lofi Beats",
+    duration: "2:08",
+    url: "src/assets/songs/relax-lofi-beat.mp3"
+  },
+  {
+    id: 2,
+    title: "Neon Drizzle Lofi",
+    artist: "Chillhop",
+    duration: "1:49",
+    url: "src/assets/songs/neon-drizzle-lofi-jazz.mp3"
+  },
+  {
+    id: 3,
+    title: "Aesthetic Lofi Vlog",
+    artist: "Synthwave",
+    duration: "2:32",
+    url: "src/assets/songs/background-aesthetic-lofi-vlog.mp3"
+  },
+  {
+    id: 4,
+    title: "Alone Night Walk Beat",
+    artist: "Lofi Beats",
+    duration: "3:29",
+    url: "src/assets/songs/lofi-mysterious-alone-night-walking-beat.mp3"
+  }
 ];
 
 const Music = () => {
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const intervalRefId = useRef(null);
 
-  const getSongDurationSeconds = (song) => {
-    if (!song) return 0;
+  const audioRef = useRef(null);
 
-    const [min, sec] = song.duration.split(":").map(Number);
-    return min * 60 + sec;
+  const getCurrentIndex = () => {
+    if (!currentSong) return -1;
+    return songs.findIndex(song => song.id === currentSong.id);
   };
 
-  const getNextSongIndex = () => {
-    const index = songs.findIndex(song => song.id === currentSong.id);
-    if (index) {
-      return (index + 1) % songs.length;
+  const playSong = (song) => {
+    setCurrentSong(song)
+    setProgress(0)
+    setIsPlaying(true)
+  }
+
+  // const getNextSongIndex = () => {
+  //   const index = getCurrentIndex();
+  //   if (index === -1) return 0; // no song selected → first song
+  //   return (index + 1) % songs.length;
+  // };
+
+  // const getPreviousSongIndex = () => {
+  //   const index = getCurrentIndex();
+  //   if (index === -1) return songs.length - 1; // no song → last song
+  //   return (index - 1 + songs.length) % songs.length;
+  // };
+
+  const setPreviousSong = () => {
+    const index = getCurrentIndex()
+    const prevIndex = (index - 1 + songs.length) % songs.length
+    playSong(songs[prevIndex])
+  }
+
+  const setNextSong = () => {
+    const index = getCurrentIndex()
+    const nextIndex = (index + 1) % songs.length
+    playSong(songs[nextIndex])
+  }
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      setIsPlaying(false);
+      audioRef.current.pause();
     } else {
-      return 0;
+      setIsPlaying(true);
+      audioRef.current.play();
     }
   }
 
-  const getPreviousSongIndex = () => {
-    const index = songs.findIndex(song => song.id === currentSong.id);
-    if (index) {
-      return (index -1) % songs.length;
-    } else {
-      return 0;
-    }
-  }
-
+  // when song changes → load audio & play
   useEffect(() => {
-    clearInterval(intervalRefId.current);
+    if (!currentSong || !audioRef.current) return;
 
-    if (!currentSong || !isPlaying) return;
+    audioRef.current.src = currentSong.url;
+    audioRef.current.play();
+    // setIsPlaying(true);
+  }, [currentSong]);
 
-    const totalSeconds = getSongDurationSeconds(currentSong);
+  // sync progress bar with real audio time
+  useEffect(() => {
+    if (!audioRef.current) return;
 
-    intervalRefId.current = setInterval(() => {
-      setProgress(prev => {
+    const handleTimeUpdate = () => {
+      const { currentTime, duration } = audioRef.current;
+      if (!duration) return;
 
-        if (prev >= 100) {
-          clearInterval(intervalRefId.current);
+      setProgress((currentTime / duration) * 100);
+    };
 
-          setCurrentSong(songs[getNextSongIndex()])
-          setProgress(0)
-          setIsPlaying(true)
-          return 0
-        }
+    const handleEnded = () => {
+      setNextSong();
+    };
 
-        return Math.min(prev + (100 / totalSeconds), 100);
-      })
-    }, 1000)
+    const audio = audioRef.current;
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("ended", handleEnded);
 
-    return () => clearInterval(intervalRefId.current)
-  }, [currentSong, isPlaying])
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [currentSong]);
 
   return (
     <div className='flex flex-col gap-8'>
@@ -98,39 +154,45 @@ const Music = () => {
               {/* Prev Btn */}
               <button
                 className='rounded-lg p-2 text-white font-semibold transition-all duration-200 cursor-pointer hover:bg-white/10'
-                // onClick={() => setIsPlaying(true)}
+                onClick={() => setPreviousSong()}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-skip-back-icon lucide-skip-back"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z"/><path d="M3 20V4"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-skip-back-icon lucide-skip-back"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></svg>
               </button>
 
               {/* Play btn */}
               <button
                 className='rounded-lg p-2 text-white font-semibold transition-all duration-200 cursor-pointer hover:bg-white/10'
-                onClick={() => setIsPlaying(true)}
+                onClick={() => togglePlay()}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-play-icon lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg>
+                {isPlaying === true ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-play-icon lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg>
+                )}
               </button>
 
               {/* Pause btn */}
-              <button
+              {/* <button
                 className='rounded-lg p-2 text-white font-semibold transition-all duration-200 cursor-pointer hover:bg-white/10'
                 onClick={() => setIsPlaying(false)}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></svg>
-              </button>
+              </button> */}
 
               {/* Next Btn */}
               <button
                 className='rounded-lg p-2 text-white font-semibold transition-all duration-200 cursor-pointer hover:bg-white/10'
-                // onClick={() => setIsPlaying(true)}
+                onClick={() => setNextSong()}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-skip-forward-icon lucide-skip-forward"><path d="M21 4v16"/><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-skip-forward-icon lucide-skip-forward"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></svg>
               </button>
             </div>
 
             <div className="w-full h-2 bg-white/10 rounded">
               <div className="h-2 bg-indigo-400 rounded" style={{ width: `${progress}%` }} />
             </div>
+
+            <audio ref={audioRef} />
           </>
         )}
       </div>
@@ -145,11 +207,7 @@ const Music = () => {
             return (
               <li
                 key={song.id}
-                onClick={() => {
-                  setCurrentSong(song)
-                  setProgress(0)
-                  setIsPlaying(true)
-                }}
+                onClick={() => playSong(song)}
                 className={`flex items-center justify-between text-sm font-semibold py-1 px-3 hover:bg-white/10 hover:cursor-pointer transition-all duration-200 rounded-lg mb-2 border ${isActive ? "bg-white/20 border-white/40 shadow-lg scale-[1.01]" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
               >
                 <span>
