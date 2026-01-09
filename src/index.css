@@ -1,6 +1,52 @@
 @import "tailwindcss";
 
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.handwritten {
+  font-family: 'Dancing Script', cursive;
+}
+
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 4px rgba(255,255,255,0.6); }
-  50% { box-shadow: 0 0 8px rgba(255,255,255,0.9); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+  }
+}
+
+/* Pulse for playing indicator */
+@keyframes lofiPulse {
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.pulse-glow {
+  animation: lofiPulse 2s infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
 }

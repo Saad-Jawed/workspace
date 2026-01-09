@@ -110,7 +110,7 @@ const Window = ({ windowData }) => {
         </div>
       </div>
 
-      <div className='p-4'>
+      <div className='p-4 overflow-auto scrollbar-hide'>
         {tools.filter(tool => windowData?.toolName === tool?.title)[0]?.component || windowData.element}
       </div>
     </div>

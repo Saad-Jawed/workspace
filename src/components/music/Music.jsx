@@ -1,35 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-
-const songs = [
-  {
-    id: 1,
-    title: "Relax Lofi Beats",
-    artist: "Lofi Beats",
-    duration: "2:08",
-    url: "src/assets/songs/relax-lofi-beat.mp3"
-  },
-  {
-    id: 2,
-    title: "Neon Drizzle Lofi",
-    artist: "Chillhop",
-    duration: "1:49",
-    url: "src/assets/songs/neon-drizzle-lofi-jazz.mp3"
-  },
-  {
-    id: 3,
-    title: "Aesthetic Lofi Vlog",
-    artist: "Synthwave",
-    duration: "2:32",
-    url: "src/assets/songs/background-aesthetic-lofi-vlog.mp3"
-  },
-  {
-    id: 4,
-    title: "Alone Night Walk Beat",
-    artist: "Lofi Beats",
-    duration: "3:29",
-    url: "src/assets/songs/lofi-mysterious-alone-night-walking-beat.mp3"
-  }
-];
+import { songs } from '../../conf/songsConf';
 
 const Music = () => {
   const [currentSong, setCurrentSong] = useState(null);
