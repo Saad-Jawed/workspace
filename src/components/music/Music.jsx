@@ -248,7 +248,7 @@ const Music = () => {
               <li
                 key={song.id}
                 onClick={() => playSong(song)}
-                className={`flex items-center justify-between text-sm font-semibold py-1 px-3 hover:bg-white/10 hover:cursor-pointer transition-all duration-200 rounded-lg mb-2 border ${isActive ? "bg-white/20 border-white/40 shadow-lg scale-[1.01]" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                className={`flex items-center justify-between text-sm font-semibold py-1 px-3 hover:bg-white/10 hover:cursor-pointer transition-all duration-200 rounded-lg mb-2  ${isActive ? "bg-white/20 border-white/40 shadow-lg scale-[1.01]" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
               >
                 <span>
                   <span className="font-semibold">{song.title}</span>

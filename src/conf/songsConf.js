@@ -40,7 +40,7 @@ export const songs = [
         artist: "Lofi Beats",
         duration: "2:08",
         url: "src/assets/songs/relax-lofi-beat.mp3",
-        cover: "https://picsum.photos/300/300"
+        cover: "https://picsum.photos/300?random=1"
     },
     {
         id: 7,
@@ -48,7 +48,7 @@ export const songs = [
         artist: "Chillhop",
         duration: "1:49",
         url: "src/assets/songs/neon-drizzle-lofi-jazz.mp3",
-        cover: "https://picsum.photos/300/300"
+        cover: "https://picsum.photos/300?random=2"
     },
     {
         id: 8,
@@ -56,7 +56,7 @@ export const songs = [
         artist: "Synthwave",
         duration: "2:32",
         url: "src/assets/songs/background-aesthetic-lofi-vlog.mp3",
-        cover: "https://picsum.photos/300/300"
+        cover: "https://picsum.photos/300?random=3"
     },
     {
         id: 9,
@@ -64,6 +64,6 @@ export const songs = [
         artist: "Lofi Beats",
         duration: "3:29",
         url: "src/assets/songs/lofi-mysterious-alone-night-walking-beat.mp3",
-        cover: "https://picsum.photos/300/300"
+        cover: "https://picsum.photos/300?random=4"
     }
 ];

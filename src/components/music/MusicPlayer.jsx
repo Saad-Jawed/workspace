@@ -199,7 +199,7 @@ const MusicPlayer = () => {
 
                 <div className="space-y-1 w-full mt-2">
                     <h3 className="text-xl font-semibold tracking-tight truncate px-4">{currentTrack.title}</h3>
-                    <p className="text-sm text-white/50 tracking-wide truncate handwritten text-lg">{currentTrack.artist}</p>
+                    <p className="text-sm text-white/70 tracking-wide truncate handwritten text-lg">{currentTrack.artist}</p>
                 </div>
             </div>
 
@@ -213,17 +213,17 @@ const MusicPlayer = () => {
                     onChange={handleProgressChange}
                     className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-white hover:accent-pink-200 transition-all"
                 />
-                <div className="flex justify-between text-[10px] text-white/30 font-mono tracking-tighter uppercase">
+                <div className="flex justify-between text-[11px] text-white/50 font-mono tracking-tighter uppercase">
                     <span>{formatTime(audioRef.current?.currentTime || 0)}</span>
                     <span>{formatTime(duration)}</span>
                 </div>
-            </div>
+            </div>  
 
             {/* Controls */}
             <div className="flex items-center justify-between px-4">
                 <button
                     onClick={() => setIsShuffle(!isShuffle)}
-                    className={`transition-colors ${isShuffle ? 'text-pink-300' : 'text-white/30 hover:text-white/60'}`}
+                    className={`transition-colors hover:scale-110 transition-transform cursor-pointer ${isShuffle ? 'text-pink-400' : 'text-white/50 hover:text-white'}`}
                     title="Shuffle"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,12 +232,12 @@ const MusicPlayer = () => {
                 </button>
 
                 <div className="flex items-center gap-6">
-                    <button onClick={prevTrack} className="hover:scale-110 transition-transform text-white/60 hover:text-white">
+                    <button onClick={prevTrack} className="hover:scale-110 transition-transform text-white/60 hover:text-white cursor-pointer">
                         <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6L18 18V6z" /></svg>
                     </button>
                     <button
                         onClick={togglePlay}
-                        className="w-14 h-14 flex items-center justify-center rounded-full bg-white text-black shadow-xl hover:scale-105 active:scale-95 transition-all"
+                        className="w-14 h-14 flex items-center justify-center rounded-full bg-white text-black shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer"
                     >
                         {isPlaying ? (
                             <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
@@ -245,14 +245,14 @@ const MusicPlayer = () => {
                             <svg className="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                         )}
                     </button>
-                    <button onClick={nextTrack} className="hover:scale-110 transition-transform text-white/60 hover:text-white">
+                    <button onClick={nextTrack} className="hover:scale-110 transition-transform text-white/60 hover:text-white cursor-pointer">
                         <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" /></svg>
                     </button>
                 </div>
 
                 <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="text-white/30 hover:text-white/60 transition-colors"
+                    className="text-white/50 hover:text-white transition-colors hover:scale-110 transition-transform cursor-pointer "
                     title="Add Tracks"
                 >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -269,7 +269,7 @@ const MusicPlayer = () => {
 
             {/* Volume Slider with Functional Icon */}
             <div className="flex items-center gap-3 px-6 py-2 bg-white/5 rounded-full mx-4">
-                <button onClick={toggleMute} className="text-white/30 hover:text-white/60 transition-colors">
+                <button onClick={toggleMute} className="text-white/50 hover:text-white transition-colors hover:scale-110 transition-transform cursor-pointer ">
                     {volume === 0 ? (
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" /></svg>
                     ) : volume < 0.5 ? (
@@ -285,7 +285,7 @@ const MusicPlayer = () => {
                     step="0.01"
                     value={volume}
                     onChange={(e) => setVolume(parseFloat(e.target.value))}
-                    className="flex-1 h-0.5 bg-white/10 rounded-full appearance-none cursor-pointer accent-white/50"
+                    className="flex-1 h-0.5 bg-white/20 rounded-full appearance-none cursor-pointer accent-white/50 hover:accent-white/70"
                 />
             </div>
 
@@ -303,7 +303,7 @@ const MusicPlayer = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className={`text-xs font-medium truncate ${idx === currentIndex ? 'text-white font-bold' : 'text-white/60'}`}>{track.title}</p>
-                            <p className="text-[10px] text-white/30 truncate">{track.artist}</p>
+                            <p className="text-[10px] text-white/40 truncate">{track.artist}</p>
                         </div>
                         {track.isUserAdded && (
                             <button
@@ -313,7 +313,7 @@ const MusicPlayer = () => {
                                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>
                         )}
-                        {idx === currentIndex && <span className="text-[8px] text-white/40 font-mono font-bold">ACTIVE</span>}
+                        {idx === currentIndex && <span className="text-[8px] text-white/60 font-mono font-bold">ACTIVE</span>}
                     </div>
                 ))}
             </div>
